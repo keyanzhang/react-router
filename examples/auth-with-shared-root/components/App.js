@@ -2,21 +2,24 @@ import React from 'react'
 import { Link } from 'react-router'
 import auth from '../utils/auth'
 
-class App extends React.Component {
-  state = {
-    loggedIn: auth.loggedIn()
-  };
+const App = React.createClass({
 
-  updateAuth = loggedIn => {
+  getInitialState() {
+    return {
+      loggedIn: auth.loggedIn()
+    }
+  },
+
+  updateAuth(loggedIn) {
     this.setState({
       loggedIn: !!loggedIn
     })
-  };
+  },
 
   componentWillMount() {
     auth.onChange = this.updateAuth
     auth.login()
-  }
+  },
 
   render() {
     return (
@@ -38,6 +41,7 @@ class App extends React.Component {
       </div>
     )
   }
-}
+
+})
 
 export default App

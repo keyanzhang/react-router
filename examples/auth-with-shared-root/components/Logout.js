@@ -1,14 +1,14 @@
 import React from 'react'
 import auth from '../utils/auth'
 
-class Logout extends React.Component {
+const Logout = React.createClass({
   componentDidMount() {
     auth.logout()
-  }
+  },
 
   render() {
     return <p>You are now logged out</p>
   }
-}
+})
 
 export default Logout

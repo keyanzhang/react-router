@@ -31,7 +31,8 @@ const Modal = React.createClass({
   }
 })
 
-class App extends React.Component {
+const App = React.createClass({
+
   componentWillReceiveProps(nextProps) {
     // if we changed routes...
     if ((
@@ -42,7 +43,7 @@ class App extends React.Component {
       // save the old children (just like animation)
       this.previousChildren = this.props.children
     }
-  }
+  },
 
   render() {
     let { location } = this.props
@@ -72,9 +73,9 @@ class App extends React.Component {
       </div>
     )
   }
-}
+})
 
-class Index extends React.Component {
+const Index = React.createClass({
   render() {
     return (
       <div>
@@ -109,9 +110,9 @@ class Index extends React.Component {
       </div>
     )
   }
-}
+})
 
-class Deep extends React.Component {
+const Deep = React.createClass({
   render() {
     return (
       <div>
@@ -131,9 +132,9 @@ class Deep extends React.Component {
       </div>
     )
   }
-}
+})
 
-class Picture extends React.Component {
+const Picture = React.createClass({
   render() {
     return (
       <div>
@@ -141,7 +142,7 @@ class Picture extends React.Component {
       </div>
     )
   }
-}
+})
 
 render((
   <Router history={browserHistory}>

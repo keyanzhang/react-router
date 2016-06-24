@@ -13,55 +13,60 @@ const { string, object } = React.PropTypes
  * Redirects are placed alongside routes in the route configuration
  * and are traversed in the same manner.
  */
-class Redirect extends React.Component {
-  static createRouteFromReactElement(element) {
-    const route = createRouteFromReactElement(element)
+const Redirect = React.createClass({
 
-    if (route.from)
-      route.path = route.from
+  statics: {
+    
+    createRouteFromReactElement(element) {
+      const route = createRouteFromReactElement(element)
 
-    route.onEnter = function (nextState, replace) {
-      const { location, params } = nextState
+      if (route.from)
+        route.path = route.from
 
-      let pathname
-      if (route.to.charAt(0) === '/') {
-        pathname = formatPattern(route.to, params)
-      } else if (!route.to) {
-        pathname = location.pathname
-      } else {
-        let routeIndex = nextState.routes.indexOf(route)
-        let parentPattern = Redirect.getRoutePattern(nextState.routes, routeIndex - 1)
-        let pattern = parentPattern.replace(/\/*$/, '/') + route.to
-        pathname = formatPattern(pattern, params)
+      route.onEnter = function (nextState, replace) {
+        const { location, params } = nextState
+
+        let pathname
+        if (route.to.charAt(0) === '/') {
+          pathname = formatPattern(route.to, params)
+        } else if (!route.to) {
+          pathname = location.pathname
+        } else {
+          let routeIndex = nextState.routes.indexOf(route)
+          let parentPattern = Redirect.getRoutePattern(nextState.routes, routeIndex - 1)
+          let pattern = parentPattern.replace(/\/*$/, '/') + route.to
+          pathname = formatPattern(pattern, params)
+        }
+
+        replace({
+          pathname,
+          query: route.query || location.query,
+          state: route.state || location.state
+        })
       }
 
-      replace({
-        pathname,
-        query: route.query || location.query,
-        state: route.state || location.state
-      })
+      return route
+    },
+
+    getRoutePattern(routes, routeIndex) {
+      let parentPattern = ''
+
+      for (let i = routeIndex; i >= 0; i--) {
+        const route = routes[i]
+        const pattern = route.path || ''
+
+        parentPattern = pattern.replace(/\/*$/, '/') + parentPattern
+
+        if (pattern.indexOf('/') === 0)
+          break
+      }
+
+      return '/' + parentPattern
     }
 
-    return route
-  }
+  },
 
-  static getRoutePattern(routes, routeIndex) {
-    let parentPattern = ''
-
-    for (let i = routeIndex; i >= 0; i--) {
-      const route = routes[i]
-      const pattern = route.path || ''
-
-      parentPattern = pattern.replace(/\/*$/, '/') + parentPattern
-
-      if (pattern.indexOf('/') === 0)
-        break
-    }
-
-    return '/' + parentPattern
-  }
-
-  static propTypes = {
+  propTypes: {
     path: string,
     from: string, // Alias for path
     to: string.isRequired,
@@ -69,7 +74,7 @@ class Redirect extends React.Component {
     state: object,
     onEnter: falsy,
     children: falsy
-  };
+  },
 
   /* istanbul ignore next: sanity check */
   render() {
@@ -78,6 +83,7 @@ class Redirect extends React.Component {
       '<Redirect> elements are for router configuration only and should not be rendered'
     )
   }
-}
+
+})
 
 export default Redirect

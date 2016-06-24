@@ -2,12 +2,14 @@ import React from 'react'
 import { withRouter } from 'react-router'
 import auth from '../utils/auth.js'
 
-class Login extends React.Component {
-  state = {
-    error: false
-  };
+const Login = React.createClass({
+  getInitialState() {
+    return {
+      error: false
+    }
+  },
 
-  handleSubmit = event => {
+  handleSubmit(event) {
     event.preventDefault()
 
     const email = this.refs.email.value
@@ -25,7 +27,7 @@ class Login extends React.Component {
         this.props.router.replace('/')
       }
     })
-  };
+  },
 
   render() {
     return (
@@ -39,6 +41,7 @@ class Login extends React.Component {
       </form>
     )
   }
-}
+
+})
 
 export default withRouter(Login)
