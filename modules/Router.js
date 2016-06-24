@@ -27,8 +27,9 @@ const { func, object } = React.PropTypes
  * a router that renders a <RouterContext> with all the props
  * it needs each time the URL changes.
  */
-class Router extends React.Component {
-  static propTypes = {
+const Router = React.createClass({
+
+  propTypes: {
     history: object,
     children: routes,
     routes, // alias for children
@@ -39,29 +40,33 @@ class Router extends React.Component {
 
     // PRIVATE: For client-side rehydration of server match.
     matchContext: object
-  };
+  },
 
-  static defaultProps = {
-    render(props) {
-      return <RouterContext {...props} />
+  getDefaultProps() {
+    return {
+      render(props) {
+        return <RouterContext {...props} />
+      }
     }
-  };
+  },
 
-  state = {
-    location: null,
-    routes: null,
-    params: null,
-    components: null
-  };
+  getInitialState() {
+    return {
+      location: null,
+      routes: null,
+      params: null,
+      components: null
+    }
+  },
 
-  handleError = error => {
+  handleError(error) {
     if (this.props.onError) {
       this.props.onError.call(this, error)
     } else {
       // Throw errors by default so we don't silently swallow them!
       throw error // This error probably occurred in getChildRoutes or getComponents.
     }
-  };
+  },
 
   componentWillMount() {
     const { parseQueryString, stringifyQuery } = this.props
@@ -82,9 +87,9 @@ class Router extends React.Component {
 
     this.history = history
     this.router = router
-  }
+  },
 
-  createRouterObjects = () => {
+  createRouterObjects() {
     const { matchContext } = this.props
     if (matchContext) {
       return matchContext
@@ -111,9 +116,9 @@ class Router extends React.Component {
     const routingHistory = createRoutingHistory(history, transitionManager)
 
     return { history: routingHistory, transitionManager, router }
-  };
+  },
 
-  wrapDeprecatedHistory = history => {
+  wrapDeprecatedHistory(history) {
     const { parseQueryString, stringifyQuery } = this.props
 
     let createHistory
@@ -128,7 +133,7 @@ class Router extends React.Component {
     }
 
     return useQueries(createHistory)({ parseQueryString, stringifyQuery })
-  };
+  },
 
   /* istanbul ignore next: sanity check */
   componentWillReceiveProps(nextProps) {
@@ -142,12 +147,12 @@ class Router extends React.Component {
         (this.props.routes || this.props.children),
       'You cannot change <Router routes>; it will be ignored'
     )
-  }
+  },
 
   componentWillUnmount() {
     if (this._unlisten)
       this._unlisten()
-  }
+  },
 
   render() {
     const { location, routes, params, components } = this.state
@@ -171,6 +176,7 @@ class Router extends React.Component {
       createElement
     })
   }
-}
+
+})
 
 export default Router

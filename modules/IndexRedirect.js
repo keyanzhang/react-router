@@ -9,26 +9,31 @@ const { string, object } = React.PropTypes
 /**
  * An <IndexRedirect> is used to redirect from an indexRoute.
  */
-class IndexRedirect extends React.Component {
-  static createRouteFromReactElement(element, parentRoute) {
-    /* istanbul ignore else: sanity check */
-    if (parentRoute) {
-      parentRoute.indexRoute = Redirect.createRouteFromReactElement(element)
-    } else {
-      warning(
-        false,
-        'An <IndexRedirect> does not make sense at the root of your route config'
-      )
-    }
-  }
+const IndexRedirect = React.createClass({
 
-  static propTypes = {
+  statics: {
+
+    createRouteFromReactElement(element, parentRoute) {
+      /* istanbul ignore else: sanity check */
+      if (parentRoute) {
+        parentRoute.indexRoute = Redirect.createRouteFromReactElement(element)
+      } else {
+        warning(
+          false,
+          'An <IndexRedirect> does not make sense at the root of your route config'
+        )
+      }
+    }
+
+  },
+
+  propTypes: {
     to: string.isRequired,
     query: object,
     state: object,
     onEnter: falsy,
     children: falsy
-  };
+  },
 
   /* istanbul ignore next: sanity check */
   render() {
@@ -37,6 +42,7 @@ class IndexRedirect extends React.Component {
       '<IndexRedirect> elements are for router configuration only and should not be rendered'
     )
   }
-}
+
+})
 
 export default IndexRedirect

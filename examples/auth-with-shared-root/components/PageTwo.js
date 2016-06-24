@@ -1,9 +1,9 @@
 import React from 'react'
 
-class PageTwo extends React.Component {
+const PageTwo = React.createClass({
   render() {
     return <h2>Page Two! Wooo!</h2>
   }
-}
+})
 
 export default PageTwo

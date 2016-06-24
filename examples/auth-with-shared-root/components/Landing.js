@@ -1,6 +1,7 @@
 import React from 'react'
 
-class Landing extends React.Component {
+const Landing = React.createClass({
+
   render() {
     return (
       <div>
@@ -10,6 +11,7 @@ class Landing extends React.Component {
       </div>
     )
   }
-}
+
+})
 
 export default Landing
