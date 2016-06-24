@@ -48,13 +48,12 @@ function createLocationDescriptor(to, { query, hash, state }) {
  *
  *   <Link ... query={{ show: true }} state={{ the: 'state' }} />
  */
-const Link = React.createClass({
-
-  contextTypes: {
+class Link extends React.Component {
+  static contextTypes = {
     router: routerShape
-  },
+  };
 
-  propTypes: {
+  static propTypes = {
     to: oneOfType([ string, object ]).isRequired,
     query: object,
     hash: string,
@@ -64,16 +63,14 @@ const Link = React.createClass({
     onlyActiveOnIndex: bool.isRequired,
     onClick: func,
     target: string
-  },
+  };
 
-  getDefaultProps() {
-    return {
-      onlyActiveOnIndex: false,
-      style: {}
-    }
-  },
+  static defaultProps = {
+    onlyActiveOnIndex: false,
+    style: {}
+  };
 
-  handleClick(event) {
+  handleClick = event => {
     invariant(
       this.context.router,
       '<Link>s rendered outside of a router context cannot handle clicks.'
@@ -107,7 +104,7 @@ const Link = React.createClass({
 
       this.context.router.push(location)
     }
-  },
+  };
 
   render() {
     const { to, query, hash, state, activeClassName, activeStyle, onlyActiveOnIndex, ...props } = this.props
@@ -141,7 +138,6 @@ const Link = React.createClass({
 
     return <a {...props} onClick={this.handleClick} />
   }
-
-})
+}
 
 export default Link
