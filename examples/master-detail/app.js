@@ -57,11 +57,11 @@ const App = React.createClass({
   }
 })
 
-const Index = React.createClass({
+class Index extends React.Component {
   render() {
     return <h1>Address Book</h1>
   }
-})
+}
 
 const Contact = withRouter(
   React.createClass({
@@ -119,41 +119,38 @@ const Contact = withRouter(
   })
 )
 
-const NewContact = withRouter(
-  React.createClass({
+const NewContact = withRouter(class extends React.Component {
+  createContact = event => {
+    event.preventDefault()
 
-    createContact(event) {
-      event.preventDefault()
+    ContactStore.addContact({
+      first: findDOMNode(this.refs.first).value,
+      last: findDOMNode(this.refs.last).value
+    }, (contact) => {
+      this.props.router.push(`/contact/${contact.id}`)
+    })
+  };
 
-      ContactStore.addContact({
-        first: findDOMNode(this.refs.first).value,
-        last: findDOMNode(this.refs.last).value
-      }, (contact) => {
-        this.props.router.push(`/contact/${contact.id}`)
-      })
-    },
+  render() {
+    return (
+      <form onSubmit={this.createContact}>
+        <p>
+          <input type="text" ref="first" placeholder="First name" />
+          <input type="text" ref="last" placeholder="Last name" />
+        </p>
+        <p>
+          <button type="submit">Save</button> <Link to="/">Cancel</Link>
+        </p>
+      </form>
+    )
+  }
+})
 
-    render() {
-      return (
-        <form onSubmit={this.createContact}>
-          <p>
-            <input type="text" ref="first" placeholder="First name" />
-            <input type="text" ref="last" placeholder="Last name" />
-          </p>
-          <p>
-            <button type="submit">Save</button> <Link to="/">Cancel</Link>
-          </p>
-        </form>
-      )
-    }
-  })
-)
-
-const NotFound = React.createClass({
+class NotFound extends React.Component {
   render() {
     return <h2>Not found</h2>
   }
-})
+}
 
 render((
   <Router history={browserHistory}>
